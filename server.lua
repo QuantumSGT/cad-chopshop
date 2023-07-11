@@ -117,30 +117,42 @@ end)
 local function AddItem(player, item, amount)
     local src = player.PlayerData.source
     if Config.Inventory == 'qb' then
-        exports[Config.InventoryName]:AddItem(src, item, amount)
+        exports['qb-inventory']:AddItem(src, item, amount)
     else
         player.Functions.AddItem(item, amount)
     end
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', amount)
 end
 
-RegisterNetEvent('cad-chopshop:recievereward', function(rarevalue)
+RewardItems = { 
+    "metalscrap",
+    "plastic",
+    "copper",
+    "iron",
+    "aluminum",
+    "steel",
+    "glass",
+}
+
+RegisterNetEvent('cad-chopshop:recievereward', function(rarevalue)    
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local amount = math.random(3500, 6500)
-    if Player and randomLoc and randomVeh and currentplate then
+    local amount = math.random(75, 117)
+    if Player ~= nil then            
         TriggerClientEvent('QBCore:Notify', src, 'You received $' .. amount .. ' for this hot vehicle', 'success')
-        if rarevalue == "rare1" then
-            AddItem(Player, "tunerlaptop", 1)
-            TriggerClientEvent('QBCore:Notify', src, 'Found a Laptop', 'success')
+        if rarevalue == "rare1" then        
+            Player.Functions.AddItem("weapon_pumpshotgun", 1)
+            TriggerClientEvent('QBCore:Notify', src, 'Found a Shotgun', 'success')        
         elseif rarevalue == "rare2" then
-            AddItem(Player, "specialcard", 1) -- add your items
+            Player.Functions.AddItem("weapon_combatpistol", 1)
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weapon_combatpistol"], 'add')
         elseif rarevalue == "normal" then
-            Player.Functions.AddMoney("cash", amount)
-            for i = 1, math.random(3, 6), 1 do
+            Player.Functions.AddMoney("cash",amount)    
+            for i = 1, math.random(3,6), 1 do
                 local item = RewardItems[math.random(1, #RewardItems)]
-                local amt = math.random(20, 50)
-                AddItem(Player, item, amt)
+                local amount = math.random(2,6)
+                Player.Functions.AddItem(item, amount)
+                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', amount)
             end
         end
     end
