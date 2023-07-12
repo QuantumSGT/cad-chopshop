@@ -20,23 +20,21 @@ RegisterNetEvent('cad-chopshop:notifyOwner', function(x, y, z, randomVeh, curren
 	local street = string.format('%s - %s', GetStreetNameFromHashKey(streetName), GetStreetNameFromHashKey(crossingRoad))
 	local zone = GetLabelText(GetNameOfZone(x, y, z))
 	chopTable = vector2(x, y)
-	PlaySoundFrontend( -1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0)
+	PlaySoundFrontend( -1, "Start_Squelch", "CB_RADIO_SFX", 0)
 	randomVeh = randomVeh:gsub("^%l", string.upper)
 	TriggerEvent('chat:addMessage', {
-		color = { 0, 0, 255 },
-		multiline = true,
-		args = { "Chopshop", "Hot vehicle " .. randomVeh .. " available at " .. zone .. " on " .. street .. " with plate number: " .. HotVehPlate }
-	})
+        template = '<div class="chat-message twitch"><i class="fas fa-car"></i> <b><span style="color: #7d7d7d">{0}</span>&nbsp;</b><div style="margin-top: 5px; font-weight: 300;">{1}</div></div>',
+        args = { "Chopshop", "Hot vehicle " .. randomVeh .. " available at " .. zone .. " on " .. street .. " with plate number: " .. HotVehPlate }
+    })
 end)
 
 RegisterNetEvent('cad-chopshop:informClients', function()
 	HotVehPlate = nil
 	HotVehModel = nil
-	PlaySoundFrontend( -1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0)
+	PlaySoundFrontend( -1, "End_Squelch", "CB_RADIO_SFX", 0)
 	TriggerEvent('chat:addMessage', {
-		color = { 0, 0, 255 },
-		multiline = true,
-		args = { "Chopshop", "The hot vehicle is no longer needed. Wait for another hot vehicle" }
+        template = '<div class="chat-message twitch"><i class="fas fa-car"></i> <b><span style="color: #7d7d7d">{0}</span>&nbsp;</b><div style="margin-top: 5px; font-weight: 300;">{1}</div></div>',
+        args = { "Chopshop", "The hot vehicle is no longer needed. Wait for another hot vehicle" }
 	})
 end)
 
