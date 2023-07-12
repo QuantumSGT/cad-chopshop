@@ -145,7 +145,7 @@ RegisterNetEvent('cad-chopshop:recievereward', function(rarevalue)
             TriggerClientEvent('QBCore:Notify', src, 'Found a Shotgun', 'success')        
         elseif rarevalue == "rare2" then
             Player.Functions.AddItem("weapon_combatpistol", 1)
-            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weapon_combatpistol"], 'add')
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["item"], 'add')
         elseif rarevalue == "normal" then
             Player.Functions.AddMoney("cash",amount)    
             for i = 1, math.random(3,6), 1 do
